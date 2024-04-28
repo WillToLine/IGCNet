@@ -3,10 +3,11 @@ import scipy.io as sio  # import scipy.io for .mat file I/O
 import numpy as np  # import numpy
 import matplotlib.pyplot as plt  # import matplotlib.pyplot for figure plotting
 import function_wmmse_powercontrol as wf
-import tensorflow as tf
+# import tensorflow as tf
 
 # %%
 K = 20  # number of users
+
 num_H = 2000  # number of training samples
 num_test = 500  # number of testing  samples
 training_epochs = 50  # number of training epochs
