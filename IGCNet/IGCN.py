@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 
-class IGCN(nn.Module):
+class IGCNet(nn.Module):
     def __init__(self):
         super().__init__()
         self.gcn = nn.Sequential(
@@ -31,11 +31,11 @@ class IGCN(nn.Module):
         fea_max, _ = torch.max(x, dim=3)
         fea = torch.cat((fea_mean, fea_max), dim=1)  # -1 x 6 x K x K
         # 整合输入到 MLP2
-        mlp2In = torch.cat((Xdiag, intens, fea, w_alpha), dim=1).transpose(1, 2)  # -1 x 15 x K -> -1 x K x 15
+        mlp2In = torch.cat((Xdiag, intens, fea, w_alpha), dim=1).transpose(1, 2).contiguous()  # -1 x 15 x K -> -1 x K x 15
         # MLP2
-        out = self.mlp2(mlp2In).transpose(1, 2)  # -1 x 1 x K
-        pred = torch.sigmoid(out)  # -1 x 1 x K
-
+        out = self.mlp2(mlp2In) # -1 x K x 1
+        pred = torch.sigmoid(out)  # -1 x K x 1
+        # pred = pred.transpose(1, 2).contiguous()  # -1 x 1 x K
         return pred
 
 
@@ -52,7 +52,7 @@ def init_weights(layer):
 
 if __name__ == "__main__":
     K = 20
-    igcn = IGCN()
+    igcn = IGCNet()
     igcn.apply(init_weights)
     x = torch.randn(size=(64, 5, K, K))
     Xdiag = torch.rand(size=(64, 1, K))
