@@ -4,3 +4,6 @@ Y. Shen, Y. Shi, J. Zhang, and K. B. Letaief, “Graph neural networks for scala
 
 # My Work
 Recode the IGCNet by pytorch, but the sum rate of IGCN is lower than WMMSE.
+
+# Run
+Clone the repository and run the file trainGCN.py.
