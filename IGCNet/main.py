@@ -1,8 +1,7 @@
 # %%
-import scipy.io as sio  # import scipy.io for .mat file I/O
 import numpy as np  # import numpy
-import matplotlib.pyplot as plt  # import matplotlib.pyplot for figure plotting
-import function_wmmse_powercontrol as wf
+from IGCNet.utils import function_wmmse_powercontrol as wf
+
 # import tensorflow as tf
 
 # %%

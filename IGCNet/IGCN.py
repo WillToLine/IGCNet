@@ -46,6 +46,8 @@ def init_weights(layer):
         nn.init.normal_(layer.bias, std=0.1)
     # 如果为全连接层，权重使用均匀分布初始化，偏置初始化为0.1
     elif type(layer) == nn.Linear:
+        # nn.init.normal_(layer.weight, std=0.1)
+        # nn.init.normal_(layer.bias, std=0.1)
         nn.init.uniform_(layer.weight, a=-0.1, b=0.1)
         nn.init.constant_(layer.bias, 0.1)
 
@@ -54,10 +56,10 @@ if __name__ == "__main__":
     K = 20
     igcn = IGCNet()
     igcn.apply(init_weights)
-    x = torch.randn(size=(64, 5, K, K))
-    Xdiag = torch.rand(size=(64, 1, K))
-    intens = torch.rand(size=(64, 1, K))
-    w_alpha = torch.rand(size=(64, 1, K))
+    x = torch.randn(size=(500, 5, K, K))
+    Xdiag = torch.rand(size=(500, 1, K))
+    intens = torch.rand(size=(500, 1, K))
+    w_alpha = torch.rand(size=(500, 1, K))
 
     output = igcn(x, Xdiag, intens, w_alpha)
     print(output.shape)

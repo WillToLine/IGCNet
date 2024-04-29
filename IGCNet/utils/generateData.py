@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import function_wmmse_powercontrol as wf
+import IGCNet.utils.function_wmmse_powercontrol as wf
 import time
 import torch
 
@@ -120,57 +120,57 @@ def transposeX(di, start_state, alpha_tr):
     return d, ss, at
 
 
-
 K = 20  # number of users
 num_H = 2000  # number of training samples
 num_test = 500  # number of testing  samples
-training_epochs = 50  # number of training epochs
+epoch = 100  # number of training epochs
 trainseed = 0  # set random seed for training set
 testseed = 7  # set random seed for test set
 batch_size = 50
 
-print('Gaussian IC Case: K=%d, Total Samples: %d, Total Iterations: %d\n' % (K, num_H, training_epochs))
+print('Gaussian IC Case: K=%d, Total Samples: %d, Total Iterations: %d\n' % (K, num_H, epoch))
 var_db = 0
 var = 1 / 10 ** (var_db / 10)
 
-# Xtrain, Ytrain, Atrain, wtime = generate_wGaussian(K, num_H, seed=trainseed, var_noise=var)
-# X, Y, A, wmmsetime = generate_wGaussian(K, num_test, seed=testseed, var_noise=var)
-# Xtrain = Xtrain.transpose()
-# X = X.transpose()
-# Ytrain = Ytrain.transpose()
-# Y = Y.transpose()
-#
-# print(Xtrain.shape, Ytrain.shape)
-#
-# Xtrain = Xtrain.reshape((-1, K, K))
-# X = X.reshape((-1, K, K))
-#
-# features = extract_features(Xtrain, num_H, K, Atrain)
-# labels = extract_labels(Ytrain, num_H, K)
-# labels_t = extract_labels(Y, num_test, K)
-#
-# test_fea = extract_features(X, num_test, K, A)
-# di_t, intert_t, interf_t, diag_t, labels_t, alpha_t, HHH_t = getRawBatch(X, test_fea, Y, num_test, num_test, K,
-#                                                                        is_test=True)
-# print(labels_t.shape)
-#
-# di, intert, interf, diag, batch_ys, alpha_tr, HHH = getRawBatch(Xtrain, features, Ytrain, num_H, batch_size, K)
-# start_state = torch.ones((batch_size, K, 1), dtype=torch.float32)
-#
-# print("interf", interf.shape)  # Xinterf
-# print("intert", intert.shape)  # Xintert
-# print("diag", diag.shape)  # Xdiag_o
-# print("start_state", start_state.shape)  # intensity
-# print("alpha_tr", alpha_tr.shape)  # w_alpha
-# print("di", di.shape)
-#
-# xtuple = transposeX(di, start_state, alpha_tr)
-# print(xtuple[0].shape)
-# print(xtuple[1].shape)
-# print(xtuple[2].shape)
-#
-# x = getBatch(interf, intert, diag, start_state, alpha_tr)
-# print("x", x.shape)
+if __name__ == "__main__":
+    Xtrain, Ytrain, Atrain, wtime = generate_wGaussian(K, num_H, seed=trainseed, var_noise=var)
+    X, Y, A, wmmsetime = generate_wGaussian(K, num_test, seed=testseed, var_noise=var)
+    Xtrain = Xtrain.transpose()
+    X = X.transpose()
+    Ytrain = Ytrain.transpose()
+    Y = Y.transpose()
+
+    print(Xtrain.shape, Ytrain.shape)
+
+    Xtrain = Xtrain.reshape((-1, K, K))
+    X = X.reshape((-1, K, K))
+
+    features = extract_features(Xtrain, num_H, K, Atrain)
+    labels = extract_labels(Ytrain, num_H, K)
+    labels_t = extract_labels(Y, num_test, K)
+
+    test_fea = extract_features(X, num_test, K, A)
+    di_t, intert_t, interf_t, diag_t, labels_t, alpha_t, HHH_t = getRawBatch(X, test_fea, Y, num_test, num_test, K,
+                                                                           is_test=True)
+    print(labels_t.shape)
+
+    di, intert, interf, diag, batch_ys, alpha_tr, HHH = getRawBatch(Xtrain, features, Ytrain, num_H, batch_size, K)
+    start_state = torch.ones((batch_size, K, 1), dtype=torch.float32)
+
+    print("interf", interf.shape)  # Xinterf
+    print("intert", intert.shape)  # Xintert
+    print("diag", diag.shape)  # Xdiag_o
+    print("start_state", start_state.shape)  # intensity
+    print("alpha_tr", alpha_tr.shape)  # w_alpha
+    print("di", di.shape)
+
+    xtuple = transposeX(di, start_state, alpha_tr)
+    print(xtuple[0].shape)
+    print(xtuple[1].shape)
+    print(xtuple[2].shape)
+
+    x = getBatch(interf, intert, diag, start_state, alpha_tr)
+    print("x", x.shape)
 
 
 
