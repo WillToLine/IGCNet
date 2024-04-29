@@ -3,8 +3,6 @@ from IGCNet.utils.generateData import *
 import torch
 
 lr = 0.001
-epoch = 30
-total_train_loss = 0.0
 total_time = 0.
 batch_size = 50
 
@@ -53,14 +51,8 @@ X = X.reshape((-1, K, K))
 
 features = extract_features(Xtrain, num_H, K, Atrain)
 test_fea = extract_features(X, num_test, K, A)
-# labels = extract_labels(Ytrain, num_H, K)
-# labels_t = extract_labels(Y, num_test, K)
 
-# di_t, intert_t, interf_t, diag_t, labels_t, alpha_t, HHH_t = getRawBatch(X, test_fea, Y, num_test, num_test, K,
-#                                                                        is_test=True)
-# print(labels_t.shape)
-
-# ---------------------------------------Generate Data--------------------------------------#
+# ---------------------------------------train--------------------------------------#
 total_cost = []
 total_loss = []
 sum_rate = []
@@ -71,7 +63,7 @@ for i in range(epoch):
     # total_accuracy = 0.0
     # train_time = 0.
     # start_time = time.time()
-    # my_model.train()
+    my_model.train()
     for ii in range(num_H // batch_size):
         di, intert, interf, diag, batch_ys, alpha_tr, Htrain = getRawBatch(Xtrain, features, Ytrain, num_H, batch_size, K)
         start_state = torch.ones((batch_size, K, 1))
@@ -92,7 +84,7 @@ for i in range(epoch):
         # 使用优化器更新参数
         optim.step()
 
-    # my_model.eval()
+    my_model.eval()
     with torch.no_grad():
         di_t, intert_t, interf_t, diag_t, labels_t, alpha_t, HHH_t = getRawBatch(X, test_fea, Y, num_test, num_test, K,
                                                                                  is_test=True)
